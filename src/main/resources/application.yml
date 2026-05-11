@@ -1,0 +1,42 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: angel-telegram-oauth
+  datasource:
+    url: ${DATABASE_URL:jdbc:h2:mem:angel_oauth;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH}
+    username: ${DATABASE_USERNAME:sa}
+    password: ${DATABASE_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+
+smartapi:
+  api-key: ${SMARTAPI_API_KEY:}
+  secret-key: ${SMARTAPI_SECRET_KEY:}
+  redirect-url: ${SMARTAPI_REDIRECT_URL:http://localhost:8080/broker/angel/callback}
+  login-endpoint: https://smartapi.angelone.in/publisher-login
+
+token-security:
+  jwt-signing-secret: ${JWT_SIGNING_SECRET:change-this-dev-jwt-signing-secret-at-least-32-chars}
+  encryption-secret: ${TOKEN_ENCRYPTION_SECRET:${JWT_SIGNING_SECRET:change-this-dev-token-encryption-secret-at-least-32-chars}}
+  state-ttl-minutes: ${STATE_TTL_MINUTES:5}
+
+telegram:
+  bot:
+    username: ${TELEGRAM_BOT_USERNAME:}
+    token: ${TELEGRAM_BOT_TOKEN:}
+    allowed-user-ids: ${TELEGRAM_ALLOWED_USER_IDS:}
+
+admin:
+  username: ${ADMIN_USERNAME:}
+  password: ${ADMIN_PASSWORD:}
+
+logging:
+  level:
+    org.hibernate.SQL: WARN
