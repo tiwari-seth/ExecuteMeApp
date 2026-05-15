@@ -4,6 +4,8 @@ import com.executeme.angeltelegramoauth.config.TelegramBotProperties;
 import com.executeme.angeltelegramoauth.service.OAuthService;
 import com.executeme.angeltelegramoauth.service.TelegramUserService;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -13,10 +15,14 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.BotSession;
+import org.telegram.telegrambots.starter.AfterBotRegistration;
 
 @Component
 @ConditionalOnExpression("'${telegram.bot.username:}' != '' && '${telegram.bot.token:}' != ''")
 public class AngelTelegramBot extends TelegramLongPollingBot {
+
+    private static final Logger log = LoggerFactory.getLogger(AngelTelegramBot.class);
 
     private final TelegramBotProperties properties;
     private final OAuthService oauthService;
@@ -42,14 +48,19 @@ public class AngelTelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        log.info("Received Telegram update: updateId={}", update.getUpdateId());
         if (!update.hasMessage() || !update.getMessage().hasText()) {
+            log.debug("Ignoring Telegram update without text message: updateId={}", update.getUpdateId());
             return;
         }
         User from = update.getMessage().getFrom();
         long chatId = update.getMessage().getChatId();
         long telegramUserId = from.getId();
+        log.info("Processing Telegram message: updateId={}, chatId={}, telegramUserId={}",
+                update.getUpdateId(), chatId, telegramUserId);
 
         if (!properties.isAllowed(telegramUserId)) {
+            log.warn("Rejected Telegram user not present in allowlist: telegramUserId={}", telegramUserId);
             sendText(chatId, "Access denied.");
             return;
         }
@@ -62,6 +73,12 @@ public class AngelTelegramBot extends TelegramLongPollingBot {
         } else {
             sendText(chatId, "Use /login to authenticate your Angel One account.");
         }
+    }
+
+    @AfterBotRegistration
+    public void afterRegistration(BotSession botSession) {
+        log.info("Telegram bot registered for long polling: username={}, sessionRunning={}",
+                properties.username(), botSession.isRunning());
     }
 
     public void sendLoginButton(long chatId, long telegramUserId, String message) {

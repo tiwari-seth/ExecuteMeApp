@@ -13,7 +13,13 @@ Spring Boot backend for Telegram-initiated Angel One SmartAPI OAuth login.
 
 ## Configuration
 
-Copy `.env.example` into your deployment environment and set real values. Important variables:
+The app imports a root `.env` file automatically through Spring Boot config import:
+
+```yaml
+spring.config.import: optional:file:.env[.properties]
+```
+
+Put real sensitive values in `.env`. Important variables:
 
 ```env
 SMARTAPI_API_KEY=...
@@ -62,6 +68,23 @@ GET /admin/telegram-users
 - `/login`: sends the Angel One login button.
 
 Every weekday at 9:00 AM Asia/Kolkata, the scheduler sends login reminders to `TELEGRAM_ALLOWED_USER_IDS`.
+
+## Telegram Troubleshooting
+
+On startup, the logs should include:
+
+```text
+Telegram bot registered for long polling
+```
+
+When a Telegram text update reaches the app, logs should include:
+
+```text
+Received Telegram update
+Processing Telegram message
+```
+
+Do not call Telegram `getUpdates` manually while this application is running. Long polling delivers each update to one consumer, so manual `getUpdates` calls can consume messages before the Spring Boot bot sees them.
 
 ## Security Notes
 

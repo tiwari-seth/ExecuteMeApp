@@ -2,6 +2,8 @@ server:
   port: ${PORT:8080}
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: angel-telegram-oauth
   datasource:
@@ -23,8 +25,8 @@ smartapi:
   login-endpoint: https://smartapi.angelone.in/publisher-login
 
 token-security:
-  jwt-signing-secret: ${JWT_SIGNING_SECRET:change-this-dev-jwt-signing-secret-at-least-32-chars}
-  encryption-secret: ${TOKEN_ENCRYPTION_SECRET:${JWT_SIGNING_SECRET:change-this-dev-token-encryption-secret-at-least-32-chars}}
+  jwt-signing-secret: ${JWT_SIGNING_SECRET:}
+  encryption-secret: ${TOKEN_ENCRYPTION_SECRET:${JWT_SIGNING_SECRET:}}
   state-ttl-minutes: ${STATE_TTL_MINUTES:5}
 
 telegram:

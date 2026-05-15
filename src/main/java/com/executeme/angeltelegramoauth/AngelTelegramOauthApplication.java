@@ -7,10 +7,13 @@ import com.executeme.angeltelegramoauth.config.TokenSecurityProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.telegram.telegrambots.starter.TelegramBotStarterConfiguration;
 
 @EnableScheduling
 @SpringBootApplication
+@Import(TelegramBotStarterConfiguration.class)
 @EnableConfigurationProperties({
         SmartApiProperties.class,
         TelegramBotProperties.class,
