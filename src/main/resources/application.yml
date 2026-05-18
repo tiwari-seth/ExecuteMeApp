@@ -5,9 +5,9 @@ spring:
   config:
     import: optional:file:.env[.properties]
   application:
-    name: angel-telegram-oauth
+    name: executeme
   datasource:
-    url: ${DATABASE_URL:jdbc:h2:mem:angel_oauth;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH}
+    url: ${DATABASE_URL:jdbc:h2:mem:executeme;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH}
     username: ${DATABASE_USERNAME:sa}
     password: ${DATABASE_PASSWORD:}
   jpa:
@@ -23,6 +23,12 @@ smartapi:
   secret-key: ${SMARTAPI_SECRET_KEY:}
   redirect-url: ${SMARTAPI_REDIRECT_URL:http://localhost:8080/broker/angel/callback}
   login-endpoint: https://smartapi.angelone.in/publisher-login
+  root-url: ${SMARTAPI_ROOT_URL:https://apiconnect.angelone.in}
+  client-local-ip: ${SMARTAPI_CLIENT_LOCAL_IP:127.0.0.1}
+  client-public-ip: ${SMARTAPI_CLIENT_PUBLIC_IP:127.0.0.1}
+  mac-address: ${SMARTAPI_MAC_ADDRESS:00:00:00:00:00:00}
+  user-type: ${SMARTAPI_USER_TYPE:USER}
+  source-id: ${SMARTAPI_SOURCE_ID:WEB}
 
 token-security:
   jwt-signing-secret: ${JWT_SIGNING_SECRET:}
@@ -42,3 +48,10 @@ admin:
 logging:
   level:
     org.hibernate.SQL: WARN
+
+execution:
+  recovery-delay-ms: ${EXECUTION_RECOVERY_DELAY_MS:60000}
+
+broker:
+  sessions:
+    expiry-scan-delay-ms: ${BROKER_SESSION_EXPIRY_SCAN_DELAY_MS:60000}

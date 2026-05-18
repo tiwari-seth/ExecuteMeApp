@@ -12,10 +12,10 @@
     </parent>
 
     <groupId>com.executeme</groupId>
-    <artifactId>angel-telegram-oauth</artifactId>
+    <artifactId>executeme</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Angel Telegram OAuth</name>
-    <description>Telegram initiated Angel One SmartAPI OAuth session manager</description>
+    <name>ExecuteMe</name>
+    <description>Centralized modular trading execution platform</description>
 
     <properties>
         <java.version>21</java.version>
