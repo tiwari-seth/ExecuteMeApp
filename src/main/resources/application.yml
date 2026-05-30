@@ -49,6 +49,14 @@ logging:
   level:
     org.hibernate.SQL: WARN
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+
 execution:
   recovery-delay-ms: ${EXECUTION_RECOVERY_DELAY_MS:60000}
 
